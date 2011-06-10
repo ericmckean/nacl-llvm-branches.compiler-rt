@@ -1,0 +1,54 @@
+# This Makefile builds onacl version of libgcc.a
+#
+# More information on the functions of libgcc can be found at:
+# http://gcc.gnu.org/onlinedocs/gccint/Libgcc.html#Libgcc
+# ../README.txt
+#
+# The following variables are expected to be set externally:
+
+# SRC_DIR
+# ARCH
+# CC
+# AR
+# CFLAGS
+
+# pick up .c files from another dir
+vpath %.c ${SRC_DIR}
+
+
+# TODO(robertm): augment/prune this as we gain a better understanding of llc
+# http://code.google.com/p/nativeclient/issues/detail?id=842
+# http://code.google.com/p/nativeclient/issues/detail?id=846
+# http://code.google.com/p/nativeclient/issues/detail?id=821
+# NOTE: for *division* we only use the pattern: div*i?.c
+#       excludes the float and complex versions
+SRCS=\
+divdi3.c divsi3.c divti3.c\
+divmoddi4.c divmodsi4.c \
+fixdfdi.c fixdfsi.c fixdfti.c \
+fixsfdi.c fixsfsi.c fixsfti.c \
+fixunsdfdi.c fixunsdfsi.c fixunsdfti.c \
+fixunssfdi.c fixunssfsi.c fixunssfti.c \
+fixunsxfdi.c fixunsxfsi.c fixunsxfti.c \
+floatdidf.c floatdisf.c  floatdixf.c \
+floatsidf.c floatsisf.c \
+floattidf.c floattisf.c floattixf.c \
+floatundidf.c floatundisf.c floatundixf.c \
+floatunsidf.c floatunsisf.c \
+floatuntidf.c floatuntisf.c floatuntixf.c \
+moddi3.c modsi3.c modti3.c \
+udivdi3.c udivsi3.c  udivti3.c \
+udivmoddi4.c udivmodsi4.c udivmodti4.c \
+umoddi3.c umodsi3.c umodti3.c
+
+# NOTE: we build pic so we can use this for both pic and non-pic nexes
+EXTRA_FLAGS= -arch ${ARCH} -I${SRC_DIR} --pnacl-allow-translate -O3 -fPIC
+EXTRA_DEFINES= -D_YUGA_LITTLE_ENDIAN=1 -D_YUGA_BIG_ENDIAN=0
+
+# overwrite default rule to make sure nothig unexpected happens
+%.o : %.c
+	$(CC) -c $(CFLAGS) ${EXTRA_DEFINES} ${EXTRA_FLAGS} $< -o $@
+
+# The main target of this Makefile
+libgcc.a: $(SRCS:.c=.o)
+	$(AR) rc $@ $^
