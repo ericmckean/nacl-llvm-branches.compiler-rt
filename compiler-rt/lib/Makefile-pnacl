@@ -19,27 +19,55 @@ vpath %.c ${SRC_DIR}
 # http://code.google.com/p/nativeclient/issues/detail?id=842
 # http://code.google.com/p/nativeclient/issues/detail?id=846
 # http://code.google.com/p/nativeclient/issues/detail?id=821
-# NOTE: for *division* we only use the pattern: div*i?.c
-#       excludes the float and complex versions
+#
+# List of unused files in this directory with explanation:
+# (this is still quite incomplete, and there is overlap)
+#
+# complex data type:
+# divdc3.c divsc3.c divxc3.c muldc3.c mulsc3.c mulxc3.c
+# 
+# 128 bit data type:
+# fixdfti.c fixxfti.c fixsfti.c 
+# fixunsdfti.c fixunssfti.c fixunsxfti.c
+# floattidf.c floattisf.c floattixf.c
+# floatuntidf.c floatuntisf.c floatuntixf.c
+# udivti3.c  umodti3.c  modti3.c multi3.c divti3.c
+# powitf2.c
+#
+# 80 bit float type:
+# floatdidf.c  floatdixf.c floatdisf.c
+# powixf2.c
+#
+# long double (ppc?):
+# powitf2.c
+#
+#
+# misc:
+# gcc_personality_v0.c
+# apple_versioning.c
+# trampoline_setup.c
+# enable_execute_stack.c
+# clear_cache.c
+
 SRCS=\
-divdi3.c divsi3.c divti3.c\
+divdi3.c divsi3.c \
 divmoddi4.c divmodsi4.c \
-fixdfdi.c fixdfsi.c fixdfti.c \
-fixsfdi.c fixsfsi.c fixsfti.c \
-fixunsdfdi.c fixunsdfsi.c fixunsdfti.c \
-fixunssfdi.c fixunssfsi.c fixunssfti.c \
-fixunsxfdi.c fixunsxfsi.c fixunsxfti.c \
-floatdidf.c floatdisf.c  floatdixf.c \
+fixdfdi.c fixdfsi.c \
+fixsfdi.c fixsfsi.c \
+fixunsdfdi.c fixunsdfsi.c \
+fixunssfdi.c fixunssfsi.c \
+floatdidf.c floatdisf.c \
 floatsidf.c floatsisf.c \
-floattidf.c floattisf.c floattixf.c \
-floatundidf.c floatundisf.c floatundixf.c \
+floatundidf.c floatundisf.c \
 floatunsidf.c floatunsisf.c \
-floatuntidf.c floatuntisf.c floatuntixf.c \
-moddi3.c modsi3.c modti3.c \
+moddi3.c modsi3.c \
 powisf2.c powidf2.c \
-udivdi3.c udivsi3.c  udivti3.c \
-udivmoddi4.c udivmodsi4.c udivmodti4.c \
-umoddi3.c umodsi3.c umodti3.c
+udivdi3.c udivsi3.c \
+udivmoddi4.c udivmodsi4.c \
+umoddi3.c umodsi3.c 
+
+
+
 
 # NOTE: we build pic so we can use this for both pic and non-pic nexes
 EXTRA_FLAGS= -I${SRC_DIR}
